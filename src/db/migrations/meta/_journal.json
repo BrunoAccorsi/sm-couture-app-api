@@ -15,6 +15,13 @@
       "when": 1739504610945,
       "tag": "0001_magenta_smiling_tiger",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1739573576844,
+      "tag": "0002_messy_true_believers",
+      "breakpoints": true
     }
   ]
 }

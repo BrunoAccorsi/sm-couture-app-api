@@ -1,0 +1,1 @@
+CREATE INDEX "email_index" ON "user_schedules" USING btree ("email");
