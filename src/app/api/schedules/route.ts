@@ -14,7 +14,6 @@ export const GET = async (req: NextRequest) => {
   console.log(req);
   try {
     const { userId } = await auth();
-    console.log(userId);
 
     if (!userId) {
       return NextResponse.json(
