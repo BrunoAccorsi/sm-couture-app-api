@@ -11,6 +11,11 @@ const inviteeCreatedSchema = z.object({
     created_at: z.string(),
     email: z.string(),
     reschedule_url: z.string(),
+    scheduled_event: z.object({
+      name: z.string(),
+      start_time: z.string(),
+      status: z.string(),
+    }),
   }),
 });
 
@@ -21,10 +26,12 @@ export const POST = async (req: NextRequest) => {
 
     await db.insert(userSchedule).values({
       email: parsedBody.payload.email,
-      event: parsedBody.event,
+      event: parsedBody.payload.scheduled_event.name,
       createdAt: new Date(parsedBody.payload.created_at),
       cancel_url: parsedBody.payload.cancel_url,
       reschedule_url: parsedBody.payload.reschedule_url,
+      start_time: new Date(parsedBody.payload.scheduled_event.start_time),
+      status: parsedBody.payload.scheduled_event.status,
     });
 
     // Return a successful response

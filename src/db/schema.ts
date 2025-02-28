@@ -12,6 +12,8 @@ export const userSchedule = pgTable(
     id: serial('id').primaryKey(),
     email: varchar().notNull(),
     event: varchar().notNull(),
+    start_time: timestamp().notNull(),
+    status: varchar().notNull(),
     cancel_url: varchar().notNull(),
     reschedule_url: varchar().notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
