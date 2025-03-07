@@ -10,6 +10,7 @@ export const userSchedule = pgTable(
   'user_schedules',
   {
     id: serial('id').primaryKey(),
+    event_id: varchar().notNull(),
     email: varchar().notNull(),
     event: varchar().notNull(),
     start_time: timestamp().notNull(),
