@@ -8,12 +8,12 @@ import z from 'zod';
 const inviteeCreatedSchema = z.object({
   event: z.string(),
   payload: z.object({
-    uri: z.string(),
     cancel_url: z.string(),
     created_at: z.string(),
     email: z.string(),
     reschedule_url: z.string(),
     scheduled_event: z.object({
+      uri: z.string(),
       name: z.string(),
       start_time: z.string(),
       status: z.string(),
@@ -26,10 +26,13 @@ export const POST = async (req: NextRequest) => {
     const body = await req.json();
 
     const parsedBody = inviteeCreatedSchema.parse(body);
-    const event_id = parsedBody.payload.uri.replace(
+    const event_id = parsedBody.payload.scheduled_event.uri.replace(
       'https://api.calendly.com/scheduled_events/',
       ''
     );
+
+    console.log('Parsed Body:', parsedBody);
+    console.log('Event ID:', event_id);
 
     if (parsedBody.event === 'invitee.created') {
       await db.insert(userSchedule).values({
