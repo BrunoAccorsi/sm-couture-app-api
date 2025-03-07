@@ -1,7 +1,7 @@
 import { db } from '@/db';
 import { userSchedule } from '@/db/schema';
 import { auth } from '@clerk/nextjs/server';
-import { eq } from 'drizzle-orm';
+import { and, eq, gt } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -10,8 +10,6 @@ const getScheduleRequestSchema = z.object({
 });
 
 export const GET = async (req: NextRequest) => {
-  console.log('GET /api/schedules');
-  console.log(req);
   try {
     const { userId } = await auth();
 
@@ -28,7 +26,12 @@ export const GET = async (req: NextRequest) => {
     const schedules = await db
       .select()
       .from(userSchedule)
-      .where(eq(userSchedule.email, validatedEmail));
+      .where(
+        and(
+          eq(userSchedule.email, validatedEmail),
+          gt(userSchedule.start_time, new Date())
+        )
+      );
     return NextResponse.json(schedules);
   } catch (error) {
     console.error('Error fetching schedules:', error);
