@@ -1,43 +1,31 @@
-import { db } from '@/db';
-import { userSchedule } from '@/db/schema';
-import { auth } from '@clerk/nextjs/server';
-import { and, eq, gt } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { auth } from '@clerk/nextjs/server';
+import { scheduleController } from '@/controllers/schedule.controller';
+import { UnauthorizedError, ApiError } from '@/errors/api-error';
 
-const getScheduleRequestSchema = z.object({
-  email: z.string().email(),
-});
-
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {
+    // Authentication check
     const { userId } = await auth();
-
     if (!userId) {
+      throw new UnauthorizedError();
+    }
+
+    // Delegate to controller
+    return await scheduleController.getSchedules(req);
+  } catch (error) {
+    console.error('Route error:', error);
+
+    if (error instanceof ApiError) {
       return NextResponse.json(
-        { error: 'Unauthorized - Please login' },
-        { status: 401 }
+        { error: error.message },
+        { status: error.statusCode }
       );
     }
-    const url = new URL(req.url);
-    const email = url.searchParams.get('email');
-    const { email: validatedEmail } = getScheduleRequestSchema.parse({ email });
 
-    const schedules = await db
-      .select()
-      .from(userSchedule)
-      .where(
-        and(
-          eq(userSchedule.email, validatedEmail),
-          gt(userSchedule.start_time, new Date())
-        )
-      );
-    return NextResponse.json(schedules);
-  } catch (error) {
-    console.error('Error fetching schedules:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch schedules' },
-      { status: 400 }
+      { error: 'An unexpected error occurred' },
+      { status: 500 }
     );
   }
 };
