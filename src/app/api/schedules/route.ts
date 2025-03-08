@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { scheduleController } from '@/controllers/schedule.controller';
 import { UnauthorizedError, ApiError } from '@/errors/api-error';
 
-export const GET = async (req: NextRequest): Promise<NextResponse> => {
+export const GET = async (): Promise<NextResponse> => {
   try {
     // Authentication check
     const { userId } = await auth();
@@ -12,7 +12,7 @@ export const GET = async (req: NextRequest): Promise<NextResponse> => {
     }
 
     // Delegate to controller
-    return await scheduleController.getSchedules(req);
+    return await scheduleController.getSchedules();
   } catch (error) {
     console.error('Route error:', error);
 

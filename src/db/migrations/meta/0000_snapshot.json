@@ -1,11 +1,11 @@
 {
-  "id": "dd769769-4638-438e-a722-ad2d70fa6a27",
+  "id": "67aeaa25-c5e6-4549-8d7d-ddedcaa377c8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.users_schedules": {
-      "name": "users_schedules",
+    "public.user_schedules": {
+      "name": "user_schedules",
       "schema": "",
       "columns": {
         "id": {
@@ -14,9 +14,45 @@
           "primaryKey": true,
           "notNull": true
         },
+        "event_id": {
+          "name": "event_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
         "userId": {
           "name": "userId",
-          "type": "varchar(256)",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event": {
+          "name": "event",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_time": {
+          "name": "start_time",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cancel_url": {
+          "name": "cancel_url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reschedule_url": {
+          "name": "reschedule_url",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -28,7 +64,23 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "userId_index": {
+          "name": "userId_index",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

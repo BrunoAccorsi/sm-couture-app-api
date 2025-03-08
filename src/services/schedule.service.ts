@@ -5,7 +5,7 @@ import { DatabaseError } from '@/errors/api-error';
 import { and, eq, gt } from 'drizzle-orm';
 
 export class ScheduleService {
-  async getUpcomingSchedulesByEmail(
+  async getUpcomingSchedulesByUserId(
     email: string
   ): Promise<SelectUserSChedule[]> {
     try {
@@ -14,7 +14,7 @@ export class ScheduleService {
         .from(userSchedule)
         .where(
           and(
-            eq(userSchedule.email, email),
+            eq(userSchedule.userId, email),
             gt(userSchedule.start_time, new Date())
           )
         );

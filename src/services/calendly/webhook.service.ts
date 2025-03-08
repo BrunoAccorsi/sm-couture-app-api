@@ -1,6 +1,14 @@
 import { calendlyWebhookSchema } from '@/schemas/calendly';
-import { eventHandlers, EventHandlerResult } from './event-handlers';
+
 import { ZodError } from 'zod';
+import { handleInviteeCreated } from './event-handlers/invitee-created.handler';
+import { handleInviteeCanceled } from './event-handlers/invitee-canceled.handler';
+
+export type EventHandlerResult = {
+  message?: string;
+  error?: string;
+  status: number;
+};
 
 export class CalendlyWebhookService {
   async processWebhook(body: unknown): Promise<EventHandlerResult> {
@@ -18,18 +26,18 @@ export class CalendlyWebhookService {
       const webhook = parsedResult.data;
       const eventType = webhook.event;
 
-      // Get the appropriate handler for this event type
-      const handler = eventHandlers[eventType];
-
-      if (!handler) {
-        return {
-          message: 'Webhook received but no action taken',
-          status: 200,
-        };
+      // Use switch statement instead of record lookup
+      switch (eventType) {
+        case 'invitee.created':
+          return await handleInviteeCreated(webhook);
+        case 'invitee.canceled':
+          return await handleInviteeCanceled(webhook);
+        default:
+          return {
+            message: 'Webhook received but no action taken',
+            status: 200,
+          };
       }
-
-      // Execute the handler
-      return await handler(webhook);
     } catch (error) {
       console.error('Error processing webhook:', error);
 

@@ -8,7 +8,7 @@ export async function handleInviteeCreated(webhook: CalendlyWebhook) {
   const event_id = extractEventId(payload.scheduled_event.uri);
 
   await db.insert(userSchedule).values({
-    email: payload.email,
+    userId: payload.tracking.salesforce_uuid,
     event_id,
     event: payload.scheduled_event.name,
     createdAt: new Date(payload.created_at),

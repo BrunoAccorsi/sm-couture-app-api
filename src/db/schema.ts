@@ -11,7 +11,7 @@ export const userSchedule = pgTable(
   {
     id: serial('id').primaryKey(),
     event_id: varchar().notNull(),
-    email: varchar().notNull(),
+    userId: varchar().notNull(),
     event: varchar().notNull(),
     start_time: timestamp().notNull(),
     status: varchar().notNull(),
@@ -19,7 +19,7 @@ export const userSchedule = pgTable(
     reschedule_url: varchar().notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },
-  (table) => [index('email_index').on(table.email)]
+  (table) => [index('userId_index').on(table.userId)]
 );
 
 export type InsertUserSchedule = typeof userSchedule.$inferInsert;

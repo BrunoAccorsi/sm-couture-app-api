@@ -1,5 +1,9 @@
 import z from 'zod';
 
+export const trackingSchema = z.object({
+  salesforce_uuid: z.string(),
+});
+
 export const scheduledEventSchema = z.object({
   uri: z.string(),
   name: z.string(),
@@ -10,9 +14,9 @@ export const scheduledEventSchema = z.object({
 export const calendlyWebhookPayloadSchema = z.object({
   cancel_url: z.string(),
   created_at: z.string(),
-  email: z.string(),
   reschedule_url: z.string(),
   scheduled_event: scheduledEventSchema,
+  tracking: trackingSchema,
 });
 
 export const calendlyWebhookSchema = z.object({

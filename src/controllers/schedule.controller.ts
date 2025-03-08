@@ -1,20 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { scheduleService } from '@/services/schedule.service';
-import { validateGetScheduleRequest } from '@/validators/schedule.validator';
 import { ApiError } from '@/errors/api-error';
+import { scheduleService } from '@/services/schedule.service';
+import { auth } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
 export class ScheduleController {
-  async getSchedules(req: NextRequest): Promise<NextResponse> {
+  async getSchedules(): Promise<NextResponse> {
     try {
-      const url = new URL(req.url);
-      const email = url.searchParams.get('email');
-
-      // Validate the email parameter
-      const { email: validatedEmail } = validateGetScheduleRequest(email);
-
+      const { userId } = await auth();
+      if (!userId) {
+        throw new ApiError('Unauthorized', 401);
+      }
       // Get schedules from the service
-      const schedules = await scheduleService.getUpcomingSchedulesByEmail(
-        validatedEmail
+      const schedules = await scheduleService.getUpcomingSchedulesByUserId(
+        userId
       );
 
       return NextResponse.json(schedules);

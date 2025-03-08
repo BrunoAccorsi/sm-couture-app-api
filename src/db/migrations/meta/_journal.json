@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1739503651676,
-      "tag": "0000_worried_amazoness",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1739504610945,
-      "tag": "0001_magenta_smiling_tiger",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1739573576844,
-      "tag": "0002_messy_true_believers",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1740717223506,
-      "tag": "0003_kind_madelyne_pryor",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1741319803609,
-      "tag": "0004_watery_secret_warriors",
+      "when": 1741476380849,
+      "tag": "0000_init",
       "breakpoints": true
     }
   ]
